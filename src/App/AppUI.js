@@ -1,46 +1,60 @@
+import React from 'react';
 import { TodoCounter } from '../TodoCounter';
 import { TodoSearch } from '../TodoSearch';
 import { TodoList } from '../TodoList';
 import { CreateTodoButton } from '../CreateTodoButton';
 import { TodoItem } from '../TodoItem';
-import React from 'react';
+import { TodosError} from '../TodosError';
+import { TodosLoading} from '../TodosLoading';
+import { EmptyTodos} from '../EmptyTodos';
+import { ReactContext } from '../ReactContext';
+import { Modal } from '../Modal';
+import { TodoForm } from '../TodoForm';
 
-function AppUI({
-    completedTodos,
-    totalTodos,
-    searchValue,
-    setSearchValue,
-    searchedTodos,
-    completeTodo,
-    deleteTodo,
-}) {
+function AppUI(){
+    const {
+        loading,
+        error,
+        searchedTodos,
+        completeTodo,
+        deleteTodo,
+        openModal,
+        setOpenModal,
+    } = React.useContext(ReactContext);
     return(
-            <React.Fragment>
-            
-            <TodoCounter 
-                completed={completedTodos} 
-                total={totalTodos}
-            />
-            <TodoSearch 
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}    
-            />
+        <React.Fragment>
+            <TodoCounter />
 
+            <TodoSearch />
+            
             <TodoList>
-                {searchedTodos.map(todo => (
-                <TodoItem 
-                    key={todo.text}
-                    text={todo.text}
-                    completed={todo.completed}
-                    onComplete={() => completeTodo(todo.text)}
-                    onDelete={() => deleteTodo(todo.text)}
-                />
-                ))}
+                    {loading && <TodosLoading />}
+                    {loading && <TodosLoading />}
+                    {loading && <TodosLoading />}
+                    {loading && <TodosLoading />}
+                    
+                    {error && <TodosError />}
+                    {!loading && (searchedTodos.length===0) && <EmptyTodos />}
+                    
+                    {searchedTodos.map(todo => (
+                        <TodoItem 
+                            key={todo.text}
+                            text={todo.text}
+                            completed={todo.completed}
+                            onComplete={() => completeTodo(todo.text)}
+                            onDelete={() => deleteTodo(todo.text)}
+                        />
+                    ))}
             </TodoList>
 
-            <CreateTodoButton />
-
-            </React.Fragment>
+            <CreateTodoButton setOpenModal={setOpenModal}/>
+                {openModal && (
+                    <Modal>
+                    <TodoForm />
+                </Modal>
+                
+                )}
+        </React.Fragment>
     );
 }
 
