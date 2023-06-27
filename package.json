@@ -31,4 +31,7 @@
     ]
   },
   "homepage": "https://cheibeck.github.io/App-ToDo",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
 }
